@@ -2,6 +2,9 @@
 # -*- coding: utf-8 -*-
 
 import sys
+import logging
+logging.basicConfig(level=logging.DEBUG,
+                    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 from storage import Storage as S
 s = S()
