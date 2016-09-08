@@ -26,7 +26,7 @@ class Storage:
         return wrapper
 
     @synchronize
-    def get_token(self, shelf):
+    def token(self, shelf):
         return shelf['token']
 
     @synchronize
@@ -41,3 +41,11 @@ class Storage:
         else:
             shelf[user] = ''
             return True
+
+    @synchronize
+    def update_day(self, shelf, weekday, syllabus):
+       shelf[weekday] = syllabus
+
+    @synchronize
+    def day(self, shelf, weekday):
+        return shelf[weekday]
