@@ -8,7 +8,7 @@ from syllabus import TimeRange as T
 from syllabus import Activity as A
 from syllabus import Datetime as D
 
-file_path = sys.argv[1]
+file_path = 'resources/syllabus.xlsx'
 
 book = xlrd.open_workbook(file_path)
 sh = book.sheet_by_index(0)
@@ -39,5 +39,4 @@ for rx in range(sh.nrows):
         # that's an subject
         syllabus = syllabuses[-1]
         a = activity(time.value, subject.value)
-        print(a)
         syllabus.add(a)
