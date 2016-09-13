@@ -25,7 +25,8 @@ class Worker:
 
         weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
         for weekday in weekdays:
-            feedback = lambda bot, update, weekday=weekday: self.answer_weekday(bot, update, weekday)
+            def feedback(bot, update, weekday=weekday):
+                self.answer_weekday(bot, update, weekday)
             handler = CommandHandler(weekday, feedback)
             dispatcher.add_handler(handler)
 
