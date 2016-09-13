@@ -66,10 +66,7 @@ class Activity:
         return self.time_range < other.time_range
 
 class Syllabus(Set):
-    def __init__(self):
-        self.data = []
-
-    def __init__(self, data):
+    def __init__(self, data=[]):
         self.data = sorted(data)
 
     def __contains__(self, time_range):
