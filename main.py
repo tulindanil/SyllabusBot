@@ -12,6 +12,8 @@ from storage import Storage
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
+from calendar import weekheader
+
 class Worker:
     def __init__(self):
         system('python3 migration.py')
@@ -23,7 +25,7 @@ class Worker:
         start_handler = CommandHandler('start', self.new_user)
         dispatcher.add_handler(start_handler)
 
-        weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+        weekdays = [weekday.lower() for weekday in weekheader(3).split(' ')]
         for weekday in weekdays:
             def feedback(bot, update, weekday=weekday):
                 self.answer_weekday(weekday, bot, update)
@@ -44,4 +46,5 @@ class Worker:
         bot, update = args
         bot.sendMessage(chat_id=update.message.chat_id,
                         text=text)
+
 Worker().work()
