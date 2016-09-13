@@ -35,12 +35,11 @@ while rx in range(sh.nrows):
     weekday_cell, _ = sh.row(rx)
     weekday = weekday_cell.value
     syllabus = Syllabus()
-    while True:
+    for _ in range(7):
         rx = rx + 1
-        try: time_cell, subject_cell = sh.row(rx)
-        except: break
-        if subject_cell.ctype == 0:
-            break
+        time_cell, subject_cell = sh.row(rx)
+        if subject_cell.ctype == 0: continue
         a = activity(time_cell.value, subject_cell.value)
         syllabus.add(a)
     s.update_day(weekday, syllabus)
+    rx = rx + 1
