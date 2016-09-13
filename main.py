@@ -6,6 +6,9 @@ import logging
 logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
+from os import system
+system('python3 migration.py')
+
 from storage import Storage as S
 s = S()
 
