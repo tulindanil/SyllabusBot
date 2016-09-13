@@ -14,7 +14,6 @@ book = xlrd.open_workbook(file_path)
 sh = book.sheet_by_index(0)
 
 s = S()
-syllabuses = []
 
 def datetime(number):
     return D(int(number / 100), number % 100)
@@ -29,14 +28,19 @@ def activity(time, subject):
     subject_name = subject
     return A(time_range, subject_name)
 
-for rx in range(sh.nrows):
-    time, subject = sh.row(rx)
-    if subject.ctype == 0 and '-' not in time.value:
-        # new weekday
-        s.update_day(time.value, syllabuses)
-        syllabuses.append(Syllabus([]))
-    elif subject.ctype == 1:
-        # that's an subject
-        syllabus = syllabuses[-1]
-        a = activity(time.value, subject.value)
+weekday = ''
+
+rx = 0
+while rx in range(sh.nrows):
+    weekday_cell, _ = sh.row(rx)
+    weekday = weekday_cell.value
+    syllabus = Syllabus()
+    while True:
+        rx = rx + 1
+        try: time_cell, subject_cell = sh.row(rx)
+        except: break
+        if subject_cell.ctype == 0:
+            break
+        a = activity(time_cell.value, subject_cell.value)
         syllabus.add(a)
+    s.update_day(weekday, syllabus)
