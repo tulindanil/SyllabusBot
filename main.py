@@ -7,29 +7,35 @@ logging.basicConfig(level=logging.DEBUG,
                     format='%(asctime)s - %(name)s - %(levelname)s - %(message)s')
 
 from os import system
-system('python3 migration.py')
-
-from storage import Storage as S
-s = S()
+from storage import Storage
 
 from telegram.ext import Updater
-updater = Updater(token=s.token())
-dispatcher = updater.dispatcher
-
-def start(bot, update):
-    bot.sendMessage(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
-
 from telegram.ext import CommandHandler
-start_handler = CommandHandler('start', start)
-dispatcher.add_handler(start_handler)
 
-def answer_weekday(bot, update, weekday):
-    bot.sendMessage(chat_id=update.message.chat_id, text=str(s.day(weekday)))
+class Worker:
+    def __init__(self):
+        system('python3 migration.py')
+        self.s = Storage()
 
-weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
-for weekday in weekdays:
-    feedback = lambda bot, update, weekday=weekday: answer_weekday(bot, update, weekday)
-    handler = CommandHandler(weekday, feedback)
-    dispatcher.add_handler(handler)
+        self.updater = Updater(token=self.s.token())
+        dispatcher = self.updater.dispatcher
 
-updater.start_polling()
+        start_handler = CommandHandler('start', self.new_user)
+        dispatcher.add_handler(start_handler)
+
+        weekdays = ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']
+        for weekday in weekdays:
+            feedback = lambda bot, update, weekday=weekday: self.answer_weekday(bot, update, weekday)
+            handler = CommandHandler(weekday, feedback)
+            dispatcher.add_handler(handler)
+
+    def work(self):
+        self.updater.start_polling()
+
+    def new_user(self, bot, update):
+        bot.sendMessage(chat_id=update.message.chat_id, text="I'm a bot, please talk to me!")
+
+    def answer_weekday(self, bot, update, weekday):
+        bot.sendMessage(chat_id=update.message.chat_id, text=str(self.s.day(weekday)))
+
+Worker().work()
