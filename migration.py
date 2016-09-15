@@ -33,7 +33,7 @@ weekday = ''
 rx = 0
 while rx in range(sh.nrows):
     weekday_cell, _ = sh.row(rx)
-    weekday = weekday_cell.value[:3]
+    weekday = weekday_cell.value.lower()
     syllabus = Syllabus()
     for _ in range(7):
         rx = rx + 1

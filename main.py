@@ -12,7 +12,7 @@ from storage import Storage
 from telegram.ext import Updater
 from telegram.ext import CommandHandler
 
-from calendar import weekheader
+from calendar import day_name
 
 class Worker:
     def __init__(self):
@@ -25,7 +25,7 @@ class Worker:
         start_handler = CommandHandler('start', self.new_user)
         dispatcher.add_handler(start_handler)
 
-        weekdays = [weekday.lower() for weekday in weekheader(3).split(' ')]
+        weekdays = [weekday.lower() for weekday in week_day]
         for weekday in weekdays:
             def feedback(bot, update, weekday=weekday):
                 self.answer_weekday(weekday, bot, update)
